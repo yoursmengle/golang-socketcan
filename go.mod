@@ -1,4 +1,4 @@
-module socketcan
+module golang-socketcan
 
 go 1.18
 

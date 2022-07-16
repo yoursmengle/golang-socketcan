@@ -13,6 +13,15 @@ import (
 	"golang.org/x/sys/unix"
 )
 
+const (
+	BAUD_1M = 1000000
+	BAUD_500K = 500000
+	BAUD_250K = 250000
+	BAUD_125K = 125000
+	BAUD_100K = 100000
+	BAUD_50K = 50000
+)
+
 type RawInterface struct {
 	fd   int
 	name string

@@ -23,7 +23,7 @@ const (
 )
 
 type RawInterface struct {
-	fd   int
+	fd   uint32
 	name string
 }
 
@@ -38,7 +38,7 @@ func (itf *RawInterface) getIfIndex(ifName string) (int, error) {
 
 	type ifreq struct {
 		Name  [unix.IFNAMSIZ]byte
-		Index int
+		Index uint32
 	}
 	var ifReq ifreq
 	copy(ifReq.Name[:], ifNameRaw)
@@ -108,7 +108,7 @@ func (itf *RawInterface) down() error {
 	return exec.Command("ifconfig", itf.name, "down").Run()
 }
 
-func (itf *RawInterface) AddfilterPass(recv_ids []uint, len uint) error {
+func (itf *RawInterface) AddfilterPass(recv_ids []uint32, len uint32) error {
 	ptr := unsafe.Pointer(&recv_ids[0])
 	succ := C.rcvFiltersSet(C.int(itf.fd), ptr, C.uint(len), C.CAN_FILTER_PASS)
 	if succ == 0 {
@@ -118,7 +118,7 @@ func (itf *RawInterface) AddfilterPass(recv_ids []uint, len uint) error {
 	return errors.New("can filter failed")
 }
 
-func (itf *RawInterface) SetBaud(baud int) error {
+func (itf *RawInterface) SetBaud(baud uint32) error {
 	var err error
 
 	err = itf.down()
@@ -134,7 +134,7 @@ func (itf *RawInterface) SetBaud(baud int) error {
 	return itf.up()
 }
 
-func (itf *RawInterface) SetTxQueueLen(size int) error {
+func (itf *RawInterface) SetTxQueueLen(size uint32) error {
 	var err error
 
 	err = itf.down()

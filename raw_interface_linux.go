@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"unsafe"
 	"errors"
+	"exec"
 	"golang.org/x/sys/unix"
 )
 
@@ -90,6 +91,14 @@ func (itf *RawInterface) Receive() (CanFrame, error) {
 	return f, nil
 }
 
+func (itf *RawInterface) up() error {
+	return exec.Command("ifconfig", itf.name, "up").Run()
+}
+
+func (itf *RawInterface) down() error {
+	return exec.Command("ifconfig", itf.name, "down").Run()
+}
+
 func (itf *RawInterface) AddfilterPass(recv_ids []uint, len uint) error {
 	ptr := unsafe.Pointer(&recv_ids[0])
 	succ := C.rcvFiltersSet(C.int(itf.fd), ptr, C.uint(len), C.CAN_FILTER_PASS)
@@ -98,4 +107,37 @@ func (itf *RawInterface) AddfilterPass(recv_ids []uint, len uint) error {
 	}
 
 	return errors.New("can filter failed")
+}
+
+func (itf *RawInterface) SetBaud(baud int) error {
+	var err error
+
+	err = itf.down()
+	if err != nil {
+		return err
+	}
+
+    exec.Command("ip", "link", "set", itf.name, "type", "can", "bitrate", fmt.Sprintf("%d", baud)).Run()
+	if err != nil {
+		return err
+	}
+
+	return itf.up()
+}
+
+func (itf *RawInterface) SetTxQueueLen(size int) error {
+	var err error
+
+	err = itf.down()
+	if err != nil {
+		return err
+	}
+
+    exec.Command("ifconfig", itf.name, "txqueuelen", fmt.Sprintf("%d", baud)).Run()
+	if err != nil {
+		return err
+	}
+
+	return itf.up()
+
 }

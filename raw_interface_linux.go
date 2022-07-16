@@ -27,7 +27,7 @@ type RawInterface struct {
 	name string
 }
 
-func (itf *RawInterface) getIfIndex(ifName string) (int, error) {
+func (itf *RawInterface) getIfIndex(ifName string) (uint32, error) {
 	ifNameRaw, err := unix.ByteSliceFromString(ifName)
 	if err != nil {
 		return 0, err

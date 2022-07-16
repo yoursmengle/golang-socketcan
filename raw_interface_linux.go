@@ -142,7 +142,7 @@ func (itf *RawInterface) SetTxQueueLen(size int) error {
 		return err
 	}
 
-    exec.Command("ifconfig", itf.name, "txqueuelen", fmt.Sprintf("%d", baud)).Run()
+    exec.Command("ifconfig", itf.name, "txqueuelen", fmt.Sprintf("%d", size)).Run()
 	if err != nil {
 		return err
 	}

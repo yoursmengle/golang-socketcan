@@ -40,7 +40,7 @@ int rcvFiltersSet(int canfd, const void *recv_ids, const uint len, const uint fi
 	    }
     }
 
-
+// 反向滤波暂未实现
 /*    if(filterType & CAN_FILTER_REJECT){
         int join_filter = 1;
         setsockopt(canfd, SOL_CAN_RAW, CAN_RAW_JOIN_FILTERS, &join_filter, sizeof(join_filter));

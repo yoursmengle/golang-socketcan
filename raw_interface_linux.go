@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"unsafe"
 	"errors"
-	"exec"
+	"os/exec"
 	"golang.org/x/sys/unix"
 )
 

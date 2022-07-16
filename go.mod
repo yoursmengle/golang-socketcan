@@ -1,4 +1,4 @@
-module golang-socketcan
+module gitee.com/yoursmengle/golang-socketcan
 
 go 1.18
 

@@ -23,11 +23,11 @@ const (
 )
 
 type RawInterface struct {
-	fd   uint32
+	fd   int
 	name string
 }
 
-func (itf *RawInterface) getIfIndex(ifName string) (uint32, error) {
+func (itf *RawInterface) getIfIndex(ifName string) (int, error) {
 	ifNameRaw, err := unix.ByteSliceFromString(ifName)
 	if err != nil {
 		return 0, err
@@ -38,7 +38,7 @@ func (itf *RawInterface) getIfIndex(ifName string) (uint32, error) {
 
 	type ifreq struct {
 		Name  [unix.IFNAMSIZ]byte
-		Index uint32
+		Index int
 	}
 	var ifReq ifreq
 	copy(ifReq.Name[:], ifNameRaw)
